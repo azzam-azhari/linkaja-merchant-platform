@@ -2,7 +2,7 @@
 
 import Sidebar from "@/components/sidebar/sidebar";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Outlet, UserProfile } from "@/types";
 import { Store, ChevronDown, ShoppingBag } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -23,27 +23,17 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [currentView, setCurrentView] = useState('dashboard');
   const [selectedOutlet, setSelectedOutlet] = useState<Outlet>(MOCK_OUTLETS[0]);
   const [printerEnabled, setPrinterEnabled] = useState(false);
 
-  // Set sidebarOpen default to true for desktop (will be overlaid on mobile)
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // Set sidebarOpen default to false for mobile
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [outletMenuOpen, setOutletMenuOpen] = useState(false);
-
-  useEffect(() => {
-    // Hide sidebar on initial load for mobile devices
-    if (window.innerWidth < 1024) {
-      setSidebarOpen(false);
-    }
-  }, []);
 
   return (
     <div className="flex min-h-screen bg-[var(--background)]">
       <Sidebar
-        currentView={currentView}
-        onSetView={setCurrentView}
         user={MOCK_USER}
         printerEnabled={printerEnabled}
         onTogglePrinter={() => setPrinterEnabled(!printerEnabled)}
@@ -55,8 +45,7 @@ export default function DashboardLayout({
       {/* Main content area */}
       <main
         className={cn(
-          "flex-1 w-full min-w-0 transition-all duration-300 ease-in-out",
-          sidebarOpen ? "lg:ml-64" : "ml-0"
+          "flex-1 w-full min-w-0 transition-all duration-300 ease-in-out lg:ml-64"
         )}
       >
         {/* Sticky Header + Accent Line */}
@@ -64,7 +53,7 @@ export default function DashboardLayout({
           <header className="flex h-16 items-center justify-between border-b border-black/[0.06] dark:border-white/[0.06] bg-[var(--background)]/80 px-4 sm:px-6 backdrop-blur-xl">
           <div className="flex items-center gap-2 sm:gap-4 min-w-0 relative">
             <button
-              className="p-2 -ml-2 text-[var(--color-text-muted)] hover:bg-[var(--color-sidebar-surface)] dark:hover:bg-white/[0.06] rounded-lg shrink-0 transition-colors"
+              className="lg:hidden p-2 -ml-2 text-[var(--color-text-muted)] hover:bg-[var(--color-sidebar-surface)] dark:hover:bg-white/[0.06] rounded-lg shrink-0 transition-colors"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

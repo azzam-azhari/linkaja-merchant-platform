@@ -33,10 +33,10 @@ export default function HomePage() {
 
         {/* CTA Button */}
         <Link
-          href="/dashboard"
+          href="/login"
           className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-primary)] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[var(--color-primary)]/20 transition-all hover:bg-[var(--color-primary-dark)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
         >
-          Go to Dashboard
+          Masuk ke Dashboard
           <svg
             className="h-4 w-4"
             fill="none"
