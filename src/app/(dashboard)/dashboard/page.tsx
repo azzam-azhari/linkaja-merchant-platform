@@ -6,6 +6,8 @@ import {
   Users,
   ShoppingCart,
   Activity,
+  CheckCircle,
+  Clock
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -14,42 +16,47 @@ import {
 
 const stats = [
   {
-    id: "revenue",
-    label: "Total Pendapatan",
-    value: "Rp 48.250.000",
-    change: "+12.5%",
-    trend: "up" as const,
-    icon: DollarSign,
-    gradient: "from-[var(--color-primary)] to-[var(--color-primary-dark)]",
-    shadow: "shadow-[var(--color-primary)]/10",
-  },
-  {
     id: "transactions",
-    label: "Total Transaksi",
-    value: "1.284",
-    change: "+8.2%",
-    trend: "up" as const,
+    label: "Transaksi Hari Ini",
+    value: "156",
+    subtext: "semua status",
     icon: ShoppingCart,
     gradient: "from-blue-500 to-blue-600",
     shadow: "shadow-blue-500/10",
   },
   {
-    id: "customers",
-    label: "Pelanggan Baru",
-    value: "342",
-    change: "+24.1%",
-    trend: "up" as const,
-    icon: Users,
+    id: "revenue",
+    label: "Total Revenue",
+    value: "Rp 12.450.000",
+    change: "+15.2%",
+    subtext: "vs kemarin",
+    icon: DollarSign,
+    gradient: "from-[var(--color-primary)] to-[var(--color-primary-dark)]",
+    shadow: "shadow-[var(--color-primary)]/10",
+  },
+  {
+    id: "net_profit",
+    label: "Total Laba Bersih",
+    value: "Rp 3.120.000",
+    change: "+8.4%",
+    subtext: "vs kemarin",
+    icon: Activity,
     gradient: "from-emerald-500 to-teal-600",
     shadow: "shadow-emerald-500/10",
   },
   {
-    id: "conversion",
-    label: "Conversion Rate",
-    value: "3.24%",
-    change: "-2.1%",
-    trend: "down" as const,
-    icon: Activity,
+    id: "success",
+    label: "Sukses",
+    value: "142",
+    icon: CheckCircle,
+    gradient: "from-emerald-500 to-emerald-600",
+    shadow: "shadow-emerald-500/10",
+  },
+  {
+    id: "pending",
+    label: "Pending",
+    value: "14",
+    icon: Clock,
     gradient: "from-amber-500 to-orange-600",
     shadow: "shadow-amber-500/10",
   },
@@ -60,26 +67,38 @@ const stats = [
 /* ------------------------------------------------------------------ */
 
 export default function DashboardPage() {
+  const currentHour = new Date().getHours();
+  let greeting = "Selamat Pagi";
+  if (currentHour >= 12 && currentHour < 15) greeting = "Selamat Siang";
+  else if (currentHour >= 15 && currentHour < 18) greeting = "Selamat Sore";
+  else if (currentHour >= 18 || currentHour < 4) greeting = "Selamat Malam";
+
+  const dateStr = new Date().toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+
   return (
     <div className="space-y-6 animate-[fade-in_400ms_ease-out]">
       {/* Page Title */}
       <div>
         <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
-          Dashboard
+          {greeting}, User 👋
         </h1>
         <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-          Ringkasan performa merchant Anda hari ini
+          {dateStr} &middot; Berikut ringkasan hari ini
         </p>
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-5">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <div
               key={stat.id}
-              className="glass-card group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-0.5"
+              className="glass-card group relative overflow-hidden p-4 transition-all duration-300 hover:-translate-y-0.5"
               style={{ animationDelay: `${index * 80}ms` }}
             >
               {/* Background glow */}
@@ -87,45 +106,35 @@ export default function DashboardPage() {
                 className={`absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br ${stat.gradient} opacity-[0.08] blur-2xl transition-opacity duration-300 group-hover:opacity-[0.15]`}
               />
 
-              <div className="relative flex items-start justify-between">
-                <div className="space-y-2">
-                  <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]">
-                    {stat.label}
-                  </p>
+              <div className="relative flex flex-col items-start gap-4">
+                <div className="flex items-center justify-between w-full">
+                  <div
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg ${stat.shadow}`}
+                  >
+                    <Icon className="h-5 w-5 text-white" />
+                  </div>
+                  {stat.change && (
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/[0.04]">
+                      <span className="text-[11px] font-semibold text-[var(--color-text-secondary)]">
+                        {stat.change}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-1">
                   <p className="text-2xl font-bold text-[var(--color-text-primary)]">
                     {stat.value}
                   </p>
-                  <div className="flex items-center gap-1.5">
-                    {stat.trend === "up" ? (
-                      <TrendingUp className="h-3.5 w-3.5 text-[var(--color-success)]" />
-                    ) : (
-                      <TrendingDown className="h-3.5 w-3.5 text-[var(--color-error)]" />
-                    )}
-                    <span
-                      className={`text-xs font-semibold ${
-                        stat.trend === "up"
-                          ? "text-[var(--color-success)]"
-                          : "text-[var(--color-error)]"
-                      }`}
-                    >
-                      {stat.change}
-                    </span>
-                    <span className="text-[11px] text-[var(--color-text-muted)]">
-                      vs bulan lalu
-                    </span>
-                  </div>
+                  <p className="text-sm font-medium text-[var(--color-text-secondary)]">
+                    {stat.label}
+                  </p>
+                  {stat.subtext && (
+                    <p className="text-xs text-[var(--color-text-muted)]">
+                      {stat.subtext}
+                    </p>
+                  )}
                 </div>
-
-                <div
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg ${stat.shadow}`}
-                >
-                  <Icon className="h-5 w-5 text-white" />
-                </div>
-              </div>
-
-              {/* Hover arrow */}
-              <div className="absolute bottom-4 right-4 flex h-6 w-6 items-center justify-center rounded-full bg-black/[0.04] opacity-0 transition-all duration-300 group-hover:opacity-100">
-                <ArrowUpRight className="h-3.5 w-3.5 text-[var(--color-text-muted)]" />
               </div>
             </div>
           );
