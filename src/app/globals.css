@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+/* ================================================================== */
+/*  Design System — LinkAja Merchant Platform (Light Theme)            */
+/* ================================================================== */
+
+:root {
+  /* ---- Brand Colors ---- */
+  --color-primary: #e5253c;
+  --color-primary-dark: #c41e32;
+  --color-primary-light: #ff4d63;
+  --color-accent: #f97316;
+  --color-accent-light: #fb923c;
+
+  /* ---- Sidebar ---- */
+  --color-sidebar-bg: #ffffff;
+  --color-sidebar-surface: #f8f9fb;
+  --color-sidebar-text: #1a1d26;
+  --color-sidebar-text-muted: #6b7280;
+  --color-sidebar-border: #e5e7eb;
+
+  /* ---- Surfaces ---- */
+  --color-surface-0: #f8f9fb;
+  --color-surface-1: #f1f3f6;
+  --color-surface-2: #e8ebf0;
+  --color-surface-3: #dfe2e8;
+
+  /* ---- Text ---- */
+  --color-text-primary: #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-muted: #9ca3af;
+
+  /* ---- Semantic ---- */
+  --color-success: #16a34a;
+  --color-warning: #ca8a04;
+  --color-error: #dc2626;
+  --color-info: #2563eb;
+
+  /* ---- Background ---- */
+  --background: #f4f5f7;
+  --foreground: #111827;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Animations */
+  --animate-ping-slow: ping-slow 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-collapsible-down: collapsible-down 200ms ease-out;
+  --animate-collapsible-up: collapsible-up 200ms ease-out;
+  --animate-fade-in: fade-in 400ms ease-out;
+  --animate-slide-in-left: slide-in-left 300ms ease-out;
+  --animate-slide-in-up: slide-in-up 400ms ease-out;
+  --animate-scale-in: scale-in 300ms ease-out;
+  --animate-shimmer: shimmer 2s infinite;
+}
+
+/* ================================================================== */
+/*  Keyframes                                                          */
+/* ================================================================== */
+
+@keyframes ping-slow {
+  75%, 100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes collapsible-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-12px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ================================================================== */
+/*  Base Styles                                                        */
+/* ================================================================== */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* ---- Custom Scrollbar ---- */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 9999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* ---- Glass Card ---- */
+.glass-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+  border-radius: 1rem;
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* ---- Glow Effects ---- */
+.glow-primary {
+  box-shadow: 0 0 20px rgba(229, 37, 60, 0.1),
+    0 0 60px rgba(229, 37, 60, 0.04);
+}
+
+.glow-accent {
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.1),
+    0 0 60px rgba(249, 115, 22, 0.04);
+}
+
+/* ---- Gradient Text ---- */
+.gradient-text {
+  background: linear-gradient(135deg, #111827 0%, #4b5563 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-brand {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
