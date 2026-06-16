@@ -17,14 +17,11 @@ import {
   CreditCard,
   QrCode
 } from 'lucide-react';
-import { Outlet, UserProfile } from '@/types';
+import { UserProfile } from '@/types';
 
 interface SidebarProps {
   currentView: string;
   onSetView: (view: string) => void;
-  outlets: Outlet[];
-  selectedOutlet: Outlet;
-  onSelectOutlet: (outlet: Outlet) => void;
   user: UserProfile;
   printerEnabled: boolean;
   onTogglePrinter: () => void;
@@ -36,9 +33,6 @@ interface SidebarProps {
 export default function Sidebar({
   currentView,
   onSetView,
-  outlets,
-  selectedOutlet,
-  onSelectOutlet,
   user,
   printerEnabled,
   onTogglePrinter,
@@ -46,8 +40,6 @@ export default function Sidebar({
   sidebarOpen,
   setSidebarOpen,
 }: SidebarProps) {
-  const [outletMenuOpen, setOutletMenuOpen] = React.useState(false);
-
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'transaksi', label: 'Transaksi', icon: ReceiptText },
@@ -71,7 +63,7 @@ export default function Sidebar({
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col w-64 bg-white border-r border-gray-100 transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col w-64 bg-white border-r border-gray-100 transition-transform duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -93,53 +85,6 @@ export default function Sidebar({
           >
             <X size={18} />
           </button>
-        </div>
-
-        {/* Selected Outlet Section */}
-        <div className="px-4 py-4 border-b border-gray-100 relative">
-          <button
-            onClick={() => setOutletMenuOpen(!outletMenuOpen)}
-            className="w-full flex items-center justify-between p-2.5 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-gray-50 hover:border-gray-200 transition-all text-left focus:outline-none"
-          >
-            <div className="flex items-center gap-3 overflow-hidden">
-              <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                <Store size={18} />
-              </div>
-              <div className="overflow-hidden">
-                <h4 className="font-semibold text-xs text-gray-800 truncate leading-tight">
-                  {selectedOutlet.name.split(' ')[0]} {selectedOutlet.name.split(' ')[1] || ''}
-                </h4>
-                <p className="text-[10px] text-gray-400 mt-0.5 truncate">
-                  {selectedOutlet.name.split(' ').slice(2).join(' ') || 'Cabang'}
-                </p>
-              </div>
-            </div>
-            <ChevronDown size={14} className={`text-gray-400 transition-transform ${outletMenuOpen ? 'rotate-180' : ''}`} />
-          </button>
-
-          {/* Outlet Selector Dropdown */}
-          {outletMenuOpen && (
-            <div className="absolute left-4 right-4 mt-1 z-50 bg-white border border-gray-100 rounded-xl shadow-xl py-1 animate-in fade-in slide-in-from-top-2 duration-150">
-              <div className="px-3 py-1.5 text-[10px] uppercase font-bold text-gray-400 border-b border-gray-50 tracking-wider">
-                Pilih Outlet
-              </div>
-              {outlets.map((outlet) => (
-                <button
-                  key={outlet.id}
-                  onClick={() => {
-                    onSelectOutlet(outlet);
-                    setOutletMenuOpen(false);
-                  }}
-                  className={`w-full flex flex-col px-4 py-2 hover:bg-gray-50 text-left transition-colors ${
-                    selectedOutlet.id === outlet.id ? 'bg-red-50/40 text-[#e11a22]' : 'text-gray-700'
-                  }`}
-                >
-                  <span className="text-xs font-semibold">{outlet.name}</span>
-                  <span className="text-[10px] text-gray-400 truncate mt-0.5">{outlet.address}</span>
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Action Button: QRIS */}

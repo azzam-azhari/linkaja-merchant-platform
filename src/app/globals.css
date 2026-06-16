@@ -126,6 +126,34 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
 
+/* ---- Dark Mode Variables ---- */
+.dark {
+  /* ---- Brand Colors ---- */
+  /* Keep primary colors similar but adjust for contrast if needed */
+  
+  /* ---- Sidebar ---- */
+  --color-sidebar-bg: #111827;
+  --color-sidebar-surface: #1f2937;
+  --color-sidebar-text: #f9fafb;
+  --color-sidebar-text-muted: #9ca3af;
+  --color-sidebar-border: #374151;
+
+  /* ---- Surfaces ---- */
+  --color-surface-0: #1a1d26;
+  --color-surface-1: #222632;
+  --color-surface-2: #2a2f3d;
+  --color-surface-3: #323849;
+
+  /* ---- Text ---- */
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #9ca3af;
+
+  /* ---- Background ---- */
+  --background: #0f172a; /* slate-950 */
+  --foreground: #f8fafc; /* slate-50 */
+}
+
 /* ---- Custom Scrollbar ---- */
 .scrollbar-thin::-webkit-scrollbar {
   width: 4px;
@@ -136,29 +164,43 @@ body {
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(150, 150, 150, 0.2);
   border-radius: 9999px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(150, 150, 150, 0.3);
 }
 
 /* ---- Glass Card ---- */
 .glass-card {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--color-sidebar-bg);
+  border: 1px solid var(--color-sidebar-border);
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.04),
     0 4px 12px rgba(0, 0, 0, 0.03);
   border-radius: 1rem;
 }
 
+.dark .glass-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .glass-card:hover {
-  border-color: rgba(0, 0, 0, 0.1);
+  border-color: var(--color-sidebar-border);
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.06),
     0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.dark .glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 /* ---- Glow Effects ---- */
@@ -174,7 +216,7 @@ body {
 
 /* ---- Gradient Text ---- */
 .gradient-text {
-  background: linear-gradient(135deg, #111827 0%, #4b5563 100%);
+  background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-text-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

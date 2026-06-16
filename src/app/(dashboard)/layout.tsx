@@ -1,10 +1,11 @@
 "use client";
 
 import Sidebar from "@/components/sidebar/sidebar";
-import { useSidebarStore } from "@/stores/sidebar-store";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, UserProfile } from "@/types";
+import { Store, ChevronDown, ShoppingBag } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const MOCK_OUTLETS: Outlet[] = [
   { id: '1', name: 'Cabang Jakarta', address: 'Jl. Sudirman No. 1' },
@@ -22,20 +23,27 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isCollapsed } = useSidebarStore();
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedOutlet, setSelectedOutlet] = useState<Outlet>(MOCK_OUTLETS[0]);
   const [printerEnabled, setPrinterEnabled] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Set sidebarOpen default to true for desktop (will be overlaid on mobile)
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  
+  const [outletMenuOpen, setOutletMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Hide sidebar on initial load for mobile devices
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-[var(--background)]">
       <Sidebar 
         currentView={currentView}
         onSetView={setCurrentView}
-        outlets={MOCK_OUTLETS}
-        selectedOutlet={selectedOutlet}
-        onSelectOutlet={setSelectedOutlet}
         user={MOCK_USER}
         printerEnabled={printerEnabled}
         onTogglePrinter={() => setPrinterEnabled(!printerEnabled)}
@@ -46,27 +54,72 @@ export default function DashboardLayout({
 
       {/* Main content area */}
       <main
-        className="flex-1 w-full min-w-0 transition-all duration-300 ease-in-out ml-0 lg:ml-64"
+        className={cn(
+          "flex-1 w-full min-w-0 transition-all duration-300 ease-in-out",
+          sidebarOpen ? "lg:ml-64" : "ml-0"
+        )}
       >
         {/* Top Header Bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-black/[0.06] bg-[var(--background)]/80 px-4 sm:px-6 backdrop-blur-xl">
-          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-black/[0.06] dark:border-white/[0.06] bg-[var(--background)]/80 px-4 sm:px-6 backdrop-blur-xl">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0 relative">
             <button 
-              className="lg:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-lg shrink-0"
-              onClick={() => setSidebarOpen(true)}
+              className="p-2 -ml-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg shrink-0 transition-colors"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <h2 className="text-xs sm:text-sm font-medium text-[var(--color-text-secondary)] truncate">
-              Selamat datang kembali 👋
-            </h2>
+            
+            {/* Outlet Selector Dropdown on Navbar */}
+            <div className="relative z-50">
+              <button
+                onClick={() => setOutletMenuOpen(!outletMenuOpen)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-all text-left focus:outline-none shadow-sm"
+              >
+                <Store size={16} className="text-[var(--color-text-muted)] shrink-0" />
+                <div className="block">
+                  <h4 className="font-semibold text-xs sm:text-sm text-[var(--color-text-primary)] leading-tight truncate max-w-[100px] sm:max-w-[150px]">
+                    {selectedOutlet.name}
+                  </h4>
+                </div>
+                <ChevronDown size={14} className={`text-[var(--color-text-muted)] shrink-0 transition-transform ${outletMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Outlet Selector Dropdown Menu */}
+              {outletMenuOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setOutletMenuOpen(false)}></div>
+                  <div className="absolute left-0 top-full mt-2 w-64 z-50 bg-white dark:bg-[#1f2937] border border-gray-100 dark:border-gray-800 rounded-xl shadow-lg py-2 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="px-4 py-2 text-[10px] uppercase font-bold text-gray-400 border-b border-gray-50 dark:border-gray-800 tracking-wider">
+                      Pilih Outlet
+                    </div>
+                    <div className="py-1">
+                      {MOCK_OUTLETS.map((outlet) => (
+                        <button
+                          key={outlet.id}
+                          onClick={() => {
+                            setSelectedOutlet(outlet);
+                            setOutletMenuOpen(false);
+                          }}
+                          className={`w-full flex flex-col px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/50 text-left transition-colors ${
+                            selectedOutlet.id === outlet.id ? 'bg-red-50/40 dark:bg-red-900/20 text-[#e11a22] dark:text-red-400' : 'text-gray-700 dark:text-gray-300'
+                          }`}
+                        >
+                          <span className="text-sm font-semibold">{outlet.name}</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">{outlet.address}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Search */}
-            <div className="flex h-9 items-center gap-2 rounded-lg border border-black/[0.08] bg-black/[0.03] px-2 sm:px-3 text-sm text-[var(--color-text-muted)] transition-colors hover:border-black/[0.12] hover:bg-black/[0.05]">
+            <div className="flex h-9 items-center gap-2 rounded-lg border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.03] px-2 sm:px-3 text-sm text-[var(--color-text-muted)] transition-colors hover:border-black/[0.12] dark:hover:border-white/[0.12]">
               <svg
                 className="h-4 w-4 shrink-0"
                 fill="none"
@@ -81,13 +134,21 @@ export default function DashboardLayout({
                 />
               </svg>
               <span className="hidden sm:inline">Cari...</span>
-              <kbd className="hidden md:inline ml-4 rounded bg-black/[0.05] px-1.5 py-0.5 text-[10px] font-medium text-[var(--color-text-muted)]">
+              <kbd className="hidden md:inline ml-4 rounded bg-black/[0.05] dark:bg-white/[0.05] px-1.5 py-0.5 text-[10px] font-medium text-[var(--color-text-muted)]">
                 ⌘K
               </kbd>
             </div>
 
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
+            {/* Cart Icon */}
+            <button className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.03] text-[var(--color-text-muted)] transition-colors hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-[var(--color-text-secondary)]">
+              <ShoppingBag className="h-4 w-4 shrink-0" />
+            </button>
+
             {/* Notification bell */}
-            <button className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-black/[0.08] bg-black/[0.03] text-[var(--color-text-muted)] transition-colors hover:bg-black/[0.05] hover:text-[var(--color-text-secondary)]">
+            <button className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.03] text-[var(--color-text-muted)] transition-colors hover:bg-black/[0.05] dark:hover:bg-white/[0.05] hover:text-[var(--color-text-secondary)]">
               <svg
                 className="h-4 w-4 shrink-0"
                 fill="none"
