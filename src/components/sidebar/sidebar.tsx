@@ -65,18 +65,18 @@ export default function Sidebar({ user, printerEnabled, onTogglePrinter, onOpenQ
           <button
             onClick={onTogglePrinter}
             className={`w-full flex items-center justify-between gap-3 p-3 rounded-2xl transition-all duration-300 shadow-md text-left overflow-hidden relative group ${printerEnabled
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 border border-emerald-400/50 shadow-emerald-500/25'
-                : 'bg-gradient-to-r from-slate-800 to-slate-900 border border-slate-700 shadow-slate-900/20'
+              ? 'bg-gradient-to-r from-emerald-500 to-teal-600 border border-emerald-400/50 shadow-emerald-500/25'
+              : 'bg-gradient-to-r from-slate-800 to-slate-900 border border-slate-700 shadow-slate-900/20'
               }`}
           >
             {/* Glossy overlay effect */}
             <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-            {/* Left: icon + text */}
+            {/* Left: icon + textt */}
             <div className="flex items-center gap-3 relative z-10">
               <div className={`p-2 rounded-xl backdrop-blur-md shadow-inner transition-colors ${printerEnabled
-                  ? 'bg-white/20 text-white'
-                  : 'bg-white/5 text-slate-400 border border-white/5'
+                ? 'bg-white/20 text-white'
+                : 'bg-white/5 text-slate-400 border border-white/5'
                 }`}>
                 <Printer size={16} className={printerEnabled ? 'drop-shadow-md' : ''} />
               </div>
