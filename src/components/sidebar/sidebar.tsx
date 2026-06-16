@@ -63,12 +63,12 @@ export default function Sidebar({
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col w-64 bg-white border-r border-gray-100 transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col w-64 bg-[var(--color-sidebar-bg)] border-r border-[var(--color-sidebar-border)] transition-transform duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Top Branding Bar */}
-        <div className="flex items-center justify-between h-16 px-6 bg-[#e11a22] text-white">
+        <div className="flex items-center justify-between h-16 px-6 bg-[var(--color-primary)] text-white">
           <div>
             <h1 className="font-sans font-bold leading-none tracking-tight text-lg">
               LinkAja Merchant
@@ -91,7 +91,7 @@ export default function Sidebar({
         <div className="px-4 py-3">
           <button
             onClick={onOpenQRIS}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#e11a22] text-white hover:bg-[#c6131a] active:scale-[0.98] font-semibold text-sm rounded-xl shadow-sm hover:shadow transition-all"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] active:scale-[0.98] font-semibold text-sm rounded-xl shadow-sm hover:shadow transition-all"
           >
             <QrCode size={16} />
             <span>Buat QRIS</span>
@@ -104,11 +104,11 @@ export default function Sidebar({
             onClick={onTogglePrinter}
             className={`w-full flex items-center justify-start gap-3 p-2.5 rounded-xl border transition-all text-left group ${
               printerEnabled 
-                ? 'bg-emerald-50 border-emerald-100 text-emerald-700 hover:bg-emerald-100/70' 
-                : 'bg-rose-50 border-rose-100 text-[#e11a22] hover:bg-rose-100/70'
+                ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-100 dark:border-emerald-900/40 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/40' 
+                : 'bg-rose-50 dark:bg-rose-950/30 border-rose-100 dark:border-rose-900/40 text-[var(--color-primary)] dark:text-red-400 hover:bg-rose-100/70 dark:hover:bg-rose-900/40'
             }`}
           >
-            <div className={`p-1.5 rounded-lg ${printerEnabled ? 'bg-emerald-100' : 'bg-rose-100'} transition-colors`}>
+            <div className={`p-1.5 rounded-lg ${printerEnabled ? 'bg-emerald-100 dark:bg-emerald-900/50' : 'bg-rose-100 dark:bg-rose-900/50'} transition-colors`}>
               <Printer size={15} />
             </div>
             <div>
@@ -136,21 +136,21 @@ export default function Sidebar({
                 }}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left transition-all group ${
                   isActive 
-                    ? 'bg-slate-100 text-slate-900 font-semibold shadow-sm' 
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'bg-[var(--color-sidebar-surface)] text-[var(--color-sidebar-text)] font-semibold shadow-sm' 
+                    : 'text-[var(--color-sidebar-text-muted)] hover:bg-[var(--color-sidebar-surface)] hover:text-[var(--color-sidebar-text)]'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon 
                     size={17} 
                     className={`transition-colors ${
-                      isActive ? 'text-[#e11a22]' : 'text-gray-400 group-hover:text-gray-600'
+                      isActive ? 'text-[var(--color-primary)]' : 'text-[var(--color-sidebar-text-muted)] group-hover:text-[var(--color-sidebar-text)]'
                     }`} 
                   />
                   <span className="text-xs">{item.label}</span>
                 </div>
                 {item.badge && (
-                  <ChevronDown size={14} className="text-gray-300 group-hover:text-gray-400" />
+                  <ChevronDown size={14} className="text-[var(--color-sidebar-text-muted)] opacity-40 group-hover:opacity-60" />
                 )}
               </button>
             );
@@ -158,28 +158,28 @@ export default function Sidebar({
         </nav>
 
         {/* Profile Footer */}
-        <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+        <div className="p-4 border-t border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-surface)]/50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5 overflow-hidden">
               <div className="relative flex-shrink-0">
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm referrer-policy: no-referrer"
+                  className="w-9 h-9 rounded-full object-cover border-2 border-[var(--color-sidebar-bg)] shadow-sm referrer-policy: no-referrer"
                   referrerPolicy="no-referrer"
                 />
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white" />
+                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[var(--color-sidebar-bg)]" />
               </div>
               <div className="overflow-hidden">
-                <h5 className="font-semibold text-xs text-slate-800 truncate leading-none">
+                <h5 className="font-semibold text-xs text-[var(--color-sidebar-text)] truncate leading-none">
                   {user.name}
                 </h5>
-                <span className="text-[10px] text-gray-500 block mt-0.5 leading-none">
+                <span className="text-[10px] text-[var(--color-sidebar-text-muted)] block mt-0.5 leading-none">
                   {user.role} profile
                 </span>
               </div>
             </div>
-            <button className="p-1 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors">
+            <button className="p-1 hover:bg-[var(--color-sidebar-surface)] rounded-lg text-[var(--color-sidebar-text-muted)] transition-colors">
               <ChevronDown size={14} />
             </button>
           </div>

@@ -26,10 +26,10 @@ export default function DashboardLayout({
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedOutlet, setSelectedOutlet] = useState<Outlet>(MOCK_OUTLETS[0]);
   const [printerEnabled, setPrinterEnabled] = useState(false);
-  
+
   // Set sidebarOpen default to true for desktop (will be overlaid on mobile)
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  
+
   const [outletMenuOpen, setOutletMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen bg-[var(--background)]">
-      <Sidebar 
+      <Sidebar
         currentView={currentView}
         onSetView={setCurrentView}
         user={MOCK_USER}
@@ -59,18 +59,19 @@ export default function DashboardLayout({
           sidebarOpen ? "lg:ml-64" : "ml-0"
         )}
       >
-        {/* Top Header Bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-black/[0.06] dark:border-white/[0.06] bg-[var(--background)]/80 px-4 sm:px-6 backdrop-blur-xl">
+        {/* Sticky Header + Accent Line */}
+        <div className="sticky top-0 z-30">
+          <header className="flex h-16 items-center justify-between border-b border-black/[0.06] dark:border-white/[0.06] bg-[var(--background)]/80 px-4 sm:px-6 backdrop-blur-xl">
           <div className="flex items-center gap-2 sm:gap-4 min-w-0 relative">
-            <button 
-              className="p-2 -ml-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg shrink-0 transition-colors"
+            <button
+              className="p-2 -ml-2 text-[var(--color-text-muted)] hover:bg-[var(--color-sidebar-surface)] dark:hover:bg-white/[0.06] rounded-lg shrink-0 transition-colors"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            
+
             {/* Outlet Selector Dropdown on Navbar */}
             <div className="relative z-50">
               <button
@@ -90,11 +91,11 @@ export default function DashboardLayout({
               {outletMenuOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setOutletMenuOpen(false)}></div>
-                  <div className="absolute left-0 top-full mt-2 w-64 z-50 bg-white dark:bg-[#1f2937] border border-gray-100 dark:border-gray-800 rounded-xl shadow-lg py-2 animate-in fade-in slide-in-from-top-2 duration-150">
-                    <div className="px-4 py-2 text-[10px] uppercase font-bold text-gray-400 border-b border-gray-50 dark:border-gray-800 tracking-wider">
+                  <div className="absolute left-0 top-full mt-2 w-64 z-50 bg-[var(--color-sidebar-bg)] border border-[var(--color-sidebar-border)] rounded-xl shadow-lg py-2 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="px-4 py-2 text-[10px] uppercase font-bold text-[var(--color-text-muted)] border-b border-[var(--color-sidebar-border)] tracking-wider">
                       Pilih Outlet
                     </div>
-                    <div className="py-1">
+                    <div className="py-1 bg-[var(--color-sidebar-bg)] border border-[var(--color-sidebar-border)] rounded-md shadow-lg">
                       {MOCK_OUTLETS.map((outlet) => (
                         <button
                           key={outlet.id}
@@ -102,12 +103,15 @@ export default function DashboardLayout({
                             setSelectedOutlet(outlet);
                             setOutletMenuOpen(false);
                           }}
-                          className={`w-full flex flex-col px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/50 text-left transition-colors ${
-                            selectedOutlet.id === outlet.id ? 'bg-red-50/40 dark:bg-red-900/20 text-[#e11a22] dark:text-red-400' : 'text-gray-700 dark:text-gray-300'
-                          }`}
+                          className={`w-full flex flex-col px-4 py-2.5 hover:bg-[var(--color-sidebar-surface)] text-left transition-colors ${selectedOutlet.id === outlet.id
+                              ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
+                              : 'text-[var(--color-text-primary)]'
+                            }`}
                         >
                           <span className="text-sm font-semibold">{outlet.name}</span>
-                          <span className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">{outlet.address}</span>
+                          <span className="text-xs text-[var(--color-text-muted)] truncate mt-0.5">
+                            {outlet.address}
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -168,7 +172,10 @@ export default function DashboardLayout({
               </span>
             </button>
           </div>
-        </header>
+          </header>
+          {/* Thin accent line below header */}
+          <div className="h-px bg-[var(--color-primary)]/20 dark:bg-[var(--color-primary)]/10" />
+        </div>
 
         {/* Page content */}
         <div className="p-4 sm:p-6 flex-1">{children}</div>

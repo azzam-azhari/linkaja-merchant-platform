@@ -132,26 +132,26 @@ body {
   /* Keep primary colors similar but adjust for contrast if needed */
   
   /* ---- Sidebar ---- */
-  --color-sidebar-bg: #111827;
-  --color-sidebar-surface: #1f2937;
+  --color-sidebar-bg: #121212;
+  --color-sidebar-surface: #1e1e1e;
   --color-sidebar-text: #f9fafb;
   --color-sidebar-text-muted: #9ca3af;
-  --color-sidebar-border: #374151;
+  --color-sidebar-border: #27272a;
 
-  /* ---- Surfaces ---- */
-  --color-surface-0: #1a1d26;
-  --color-surface-1: #222632;
-  --color-surface-2: #2a2f3d;
-  --color-surface-3: #323849;
+  /* ---- Surfaces (Card/Box) ---- */
+  --color-surface-0: #18181b; /* Warna card utama */
+  --color-surface-1: #27272a;
+  --color-surface-2: #3f3f46;
+  --color-surface-3: #52525b;
 
   /* ---- Text ---- */
   --color-text-primary: #f9fafb;
   --color-text-secondary: #d1d5db;
-  --color-text-muted: #9ca3af;
+  --color-text-muted: #a1a1aa;
 
   /* ---- Background ---- */
-  --background: #0f172a; /* slate-950 */
-  --foreground: #f8fafc; /* slate-50 */
+  --background: #09090b; /* Warna latar belakang paling gelap */
+  --foreground: #fafafa;
 }
 
 /* ---- Custom Scrollbar ---- */

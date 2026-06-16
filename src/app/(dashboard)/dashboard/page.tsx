@@ -108,14 +108,14 @@ export default function DashboardPage() {
                 className={`absolute -right-6 -top-6 h-24 w-24 rounded-full bg-gradient-to-br ${stat.gradient} opacity-[0.08] blur-2xl transition-opacity duration-300 group-hover:opacity-[0.15]`}
               />
 
-              <div className={`relative flex gap-4 ${index === 0 ? 'flex-row items-center' : 'flex-col items-start'}`}>
-                <div className={`flex items-center justify-between ${index === 0 ? 'w-auto' : 'w-full'}`}>
+              <div className="relative flex flex-col items-start gap-4">
+                <div className="flex items-center justify-between w-full">
                   <div
                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg ${stat.shadow}`}
                   >
                     <Icon className="h-5 w-5 text-white" />
                   </div>
-                  {stat.change && index !== 0 && (
+                  {stat.change && (
                     <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/[0.04] dark:bg-white/[0.04]">
                       <span className="text-[11px] font-semibold text-[var(--color-text-secondary)]">
                         {stat.change}
@@ -124,7 +124,7 @@ export default function DashboardPage() {
                   )}
                 </div>
 
-                <div className={`space-y-1 ${index === 0 ? 'flex-1' : ''}`}>
+                <div className="space-y-1">
                   <p className="text-2xl font-bold text-[var(--color-text-primary)]">
                     {stat.value}
                   </p>
@@ -137,14 +137,6 @@ export default function DashboardPage() {
                     </p>
                   )}
                 </div>
-                
-                {stat.change && index === 0 && (
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/[0.04] dark:bg-white/[0.04]">
-                    <span className="text-[11px] font-semibold text-[var(--color-text-secondary)]">
-                      {stat.change}
-                    </span>
-                  </div>
-                )}
               </div>
             </div>
           );
